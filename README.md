@@ -48,14 +48,23 @@ En flotas pequeñas y medianas, los conductores suelen carecer de una referencia
 ## Estructura del proyecto
 
 app/
+
 └─ src/main/java/com/fleet/safety/
+
 ├─ data/remote/ (HTTP + JSON + mappers)
+
 ├─ domain/ (modelos + motor de reglas)
+
 └─ ui/ (activities + binding + store)
+
 └─ res/
+
 ├─ layout/ (XML de pantallas)
+
 ├─ drawable/ (gauge/progress, íconos SVG)
+
 ├─ values/ (strings, colors, dimens, styles)
+
 └─ mipmap/ (adaptive icon)
 
 
@@ -74,4 +83,4 @@ app/
 
 ## Mas info
 
-Ver **Wiki** para detalles de arquitectura, pantallas y flujo.
+Ver [**Wiki**](https://github.com/1337B/parcial-1-am-acn4bv-bielaszczuk-cristhian/wiki) para detalles de arquitectura, pantallas y flujo.
