@@ -35,4 +35,10 @@
 
     <string name="illustration_velocity">Velocity illustration</string>
     <string name="illustration_car">Car illustration</string>
+
+    <string name="weather_icon_url">https://picsum.photos/seed/fleetsafety/200/200</string>
+    <string name="weather_icon_description">Weather icon</string>
+    <string name="save_snapshot">Save Snapshot</string>
+    <string name="snapshot_saved">Screenshot saved to gallery</string>
+    <string name="snapshot_error">Failed to save screenshot: %s</string>
 </resources>

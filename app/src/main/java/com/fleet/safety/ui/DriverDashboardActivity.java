@@ -1,19 +1,30 @@
 package com.fleet.safety.ui;
 
 import android.animation.ObjectAnimator;
+import android.content.ContentValues;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.view.View;
 import android.view.ViewGroup;
 import android.graphics.Typeface;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+
+import coil.Coil;
+import coil.ImageLoader;
+import coil.request.ImageRequest;
 
 import com.fleet.safety.data.remote.OpenMeteoWeatherService;
 import com.fleet.safety.data.remote.WeatherCallback;
@@ -27,6 +38,7 @@ import com.fleet.safety.domain.WeatherSnapshot;
 import com.fleet.safety.domain.WeatherType;
 import com.fleet.safety.R;
 
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -53,6 +65,7 @@ public class DriverDashboardActivity extends AppCompatActivity {
 
         setupSpinner();
         setupRecalculateButton();
+        setupScreenshotButton();
     }
 
     private void setupSpinner() {
@@ -67,6 +80,10 @@ public class DriverDashboardActivity extends AppCompatActivity {
 
     private void setupRecalculateButton() {
         binding.buttonRecalculate.setOnClickListener(v -> recalculate());
+    }
+
+    private void setupScreenshotButton() {
+        binding.buttonSaveScreenshot.setOnClickListener(v -> captureAndSaveScreenshot());
     }
 
     private void recalculate() {
@@ -102,6 +119,21 @@ public class DriverDashboardActivity extends AppCompatActivity {
     private void updateWeatherDisplay(WeatherSnapshot weather) {
         binding.textTemp.setText(getString(R.string.temperature_value, weather.getTemperatureCelsius()));
         binding.textPrecip.setText(getString(R.string.precipitation_value, weather.getPrecipitationMm()));
+
+        // Load weather icon from URL
+        loadWeatherIcon();
+    }
+
+    private void loadWeatherIcon() {
+        String iconUrl = getString(R.string.weather_icon_url);
+
+        ImageLoader imageLoader = Coil.imageLoader(this);
+        ImageRequest request = new ImageRequest.Builder(this)
+                .data(iconUrl)
+                .target(binding.imageWeatherIcon)
+                .build();
+
+        imageLoader.enqueue(request);
     }
 
     private void computeSpeed(WeatherSnapshot weather) {
@@ -222,6 +254,79 @@ public class DriverDashboardActivity extends AppCompatActivity {
 
         while (binding.historyContainer.getChildCount() > MAX_HISTORY_ENTRIES) {
             binding.historyContainer.removeViewAt(binding.historyContainer.getChildCount() - 1);
+        }
+    }
+
+    private void captureAndSaveScreenshot() {
+        try {
+            View dashboardView = binding.frameDashboard;
+
+            Bitmap bitmap = Bitmap.createBitmap(
+                    dashboardView.getWidth(),
+                    dashboardView.getHeight(),
+                    Bitmap.Config.ARGB_8888
+            );
+
+            Canvas canvas = new Canvas(bitmap);
+            dashboardView.draw(canvas);
+            saveBitmapToMediaStore(bitmap);
+
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to capture screenshot", e);
+            Toast.makeText(this,
+                    getString(R.string.snapshot_error, e.getMessage()),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void saveBitmapToMediaStore(Bitmap bitmap) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US);
+            String timestamp = dateFormat.format(new Date());
+            String filename = "fleet_safety_snapshot_" + timestamp + ".png";
+
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.Images.Media.DISPLAY_NAME, filename);
+            values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                values.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/FleetSafety");
+                values.put(MediaStore.Images.Media.IS_PENDING, 1);
+            }
+
+            Uri collection;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                collection = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY);
+            } else {
+                collection = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+            }
+
+            Uri imageUri = getContentResolver().insert(collection, values);
+
+            if (imageUri != null) {
+                try (OutputStream out = getContentResolver().openOutputStream(imageUri)) {
+                    if (out != null) {
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                    }
+                }
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    values.clear();
+                    values.put(MediaStore.Images.Media.IS_PENDING, 0);
+                    getContentResolver().update(imageUri, values, null, null);
+                }
+
+                Toast.makeText(this, getString(R.string.snapshot_saved), Toast.LENGTH_LONG).show();
+                Log.d(TAG, "Screenshot saved to: " + imageUri);
+            } else {
+                throw new Exception("Failed to create MediaStore entry");
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to save screenshot", e);
+            Toast.makeText(this,
+                    getString(R.string.snapshot_error, e.getMessage()),
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
