@@ -84,3 +84,19 @@ app/
 ## Mas info
 
 Ver [**Wiki**](https://github.com/1337B/parcial-1-am-acn4bv-bielaszczuk-cristhian/wiki) para detalles de arquitectura, pantallas y flujo.
+
+## Nuevos features
+
+### Captura de pantalla del dashboard
+
+Se agregó la funcionalidad de guardar snapshots del dashboard del conductor. El usuario puede capturar el estado actual del tablero con todos los datos de velocidad, clima y condiciones, y guardarlo directamente en la galería del dispositivo. Las imágenes guardadas incluyen metadata en los campos EXIF con información relevante como velocidad segura calculada, condiciones climáticas y ubicación GPS.
+
+![Dashboard con botón de snapshot](app/src/main/drivedashboard.png)
+
+![Confirmación de snapshot guardado](app/src/main/snapshotsaved.png)
+
+![Imagen guardada en galería](app/src/main/picturegallery.png)
+
+### Integración con Retrofit para Open-Meteo
+
+La aplicación ahora utiliza Retrofit con Moshi para realizar las consultas a la API de Open-Meteo, reemplazando la implementación manual con HttpURLConnection. Esta integración proporciona mejor manejo de errores, conversión automática de JSON y código más mantenible.

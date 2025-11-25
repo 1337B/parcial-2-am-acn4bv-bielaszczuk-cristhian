@@ -120,16 +120,31 @@ public class DriverDashboardActivity extends AppCompatActivity {
         binding.textTemp.setText(getString(R.string.temperature_value, weather.getTemperatureCelsius()));
         binding.textPrecip.setText(getString(R.string.precipitation_value, weather.getPrecipitationMm()));
 
-        // Load weather icon from URL
-        loadWeatherIcon();
+        loadWeatherIcon(weather.getWeatherType());
     }
 
-    private void loadWeatherIcon() {
-        String iconUrl = getString(R.string.weather_icon_url);
+    private void loadWeatherIcon(WeatherType weatherType) {
+        String iconUrl;
+        switch (weatherType) {
+            case RAIN:
+                iconUrl = "https://cdn-icons-png.flaticon.com/512/4834/4834585.png";
+                break;
+            case SNOW:
+                iconUrl = "https://cdn-icons-png.flaticon.com/512/2530/2530064.png";
+                break;
+            case ICE:
+                iconUrl = "https://cdn-icons-png.freepik.com/512/8131/8131541.png";
+                break;
+            case CLEAR:
+            default:
+                iconUrl = "https://cdn-icons-png.flaticon.com/512/979/979585.png";
+                break;
+        }
 
         ImageLoader imageLoader = Coil.imageLoader(this);
         ImageRequest request = new ImageRequest.Builder(this)
                 .data(iconUrl)
+                .allowHardware(false)
                 .target(binding.imageWeatherIcon)
                 .build();
 
@@ -259,7 +274,7 @@ public class DriverDashboardActivity extends AppCompatActivity {
 
     private void captureAndSaveScreenshot() {
         try {
-            View dashboardView = binding.frameDashboard;
+            View dashboardView = binding.scrollDashboard;
 
             Bitmap bitmap = Bitmap.createBitmap(
                     dashboardView.getWidth(),
