@@ -15,8 +15,9 @@
         android:theme="@style/Theme.FleetSafety"
         tools:targetApi="31">
 
+        <!-- LoginActivity como pantalla de inicio -->
         <activity
-            android:name="com.fleet.safety.ui.MainActivity"
+            android:name="com.fleet.safety.ui.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,10 +25,22 @@
             </intent-filter>
         </activity>
 
+        <!-- RegisterActivity -->
+        <activity
+            android:name="com.fleet.safety.ui.RegisterActivity"
+            android:exported="false" />
+
+        <!-- MainActivity -->
+        <activity
+            android:name="com.fleet.safety.ui.MainActivity"
+            android:exported="false" />
+
+        <!-- DriverDashboardActivity -->
         <activity
             android:name="com.fleet.safety.ui.DriverDashboardActivity"
             android:exported="false" />
 
+        <!-- AdminSettingsActivity -->
         <activity
             android:name="com.fleet.safety.ui.AdminSettingsActivity"
             android:exported="false" />

@@ -3,6 +3,24 @@
     <string name="driver_dashboard_title">Driver Dashboard</string>
     <string name="admin_settings_title">Admin Settings</string>
 
+    <!-- Login & Register -->
+    <string name="welcome_back">Welcome Back</string>
+    <string name="login_subtitle">Sign in to continue</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="full_name">Full Name</string>
+    <string name="or">OR</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="dont_have_account">Don\'t have an account?</string>
+    <string name="create_account">Create Account</string>
+    <string name="register_subtitle">Join Fleet Safety today</string>
+    <string name="back_to_login">Back to Login</string>
+    <string name="logout">Logout</string>
+    <string name="default_web_client_id">572323756144-rifjlp4577ioaiqi34b6g2ap3oeek8a1.apps.googleusercontent.com</string>
+
     <string name="recalculate">Recalculate</string>
 
     <string name="road_type">Road Type</string>

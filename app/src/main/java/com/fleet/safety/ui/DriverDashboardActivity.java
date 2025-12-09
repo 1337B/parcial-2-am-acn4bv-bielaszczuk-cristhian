@@ -2,6 +2,7 @@ package com.fleet.safety.ui;
 
 import android.animation.ObjectAnimator;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.net.Uri;
@@ -52,12 +53,28 @@ public class DriverDashboardActivity extends AppCompatActivity {
     private SettingsStore settingsStore;
     private SpeedRuleEngine ruleEngine;
     private OpenMeteoWeatherService weatherService;
+    private String userName = "Driver";
+    private String userEmail = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityDriverDashboardBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            userName = intent.getStringExtra("USER_NAME");
+            userEmail = intent.getStringExtra("USER_EMAIL");
+
+            if (userName != null && !userName.isEmpty()) {
+                binding.textUserName.setText(userName);
+                Log.d(TAG, "Welcome " + userName + " (" + userEmail + ")");
+                Toast.makeText(this, "Welcome " + userName + "!", Toast.LENGTH_SHORT).show();
+            } else {
+                binding.textUserName.setText("Driver");
+            }
+        }
 
         settingsStore = new SettingsStore(this);
         ruleEngine = new SpeedRuleEngine();
