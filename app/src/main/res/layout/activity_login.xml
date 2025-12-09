@@ -21,7 +21,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/color_primary" />
+            app:tint="@null" />
 
         <TextView
             android:id="@+id/text_welcome"
@@ -102,7 +102,6 @@
             android:id="@+id/divider_left"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_marginTop="@dimen/space_l"
             android:layout_marginEnd="@dimen/space_m"
             android:background="@color/color_on_surface"
             android:alpha="0.3"
