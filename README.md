@@ -8,7 +8,7 @@ Aplicación móvil Android que calcula y muestra una **velocidad máxima segura*
 
 ## Demo
 
-![App Demo](demogif.gif)
+![App Demo](app/src/main/demogif.gif)
 
 ## ¿Qué problema resuelve?
 
@@ -44,7 +44,7 @@ En flotas pequeñas y medianas, los conductores suelen carecer de una referencia
 
 ### Firebase Authentication
 
-![Firebase Auth Users](screenfireauth.png)
+![Firebase Auth Users](app/src/main/screenfireauth.png)
 
 Firebase Authentication gestiona el registro y autenticación de usuarios mediante email y contraseña. La aplicación implementa:
 
@@ -57,7 +57,7 @@ Cada usuario autenticado recibe un UID único que se utiliza como identificador 
 
 ### Firebase Firestore
 
-![Firestore Database](screenfirestore.png)
+![Firestore Database](app/src/main/screenfirestore.png)
 
 Firestore almacena y sincroniza los datos de usuarios en tiempo real. La estructura de la base de datos incluye:
 
